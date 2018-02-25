@@ -66,10 +66,11 @@ public class UserMealsUtil {
                                                                     meal.getDescription(),
                                                                     meal.getCalories(),
                                                                     isExceededDay.get(date));
-            }
-            if(isExceededDay.get(date).isTrueFalse() && relevantUserMealWithExceed != null)
                 relevantMeal.add(relevantUserMealWithExceed);
+            }
+
         }
         return relevantMeal;
     }
+
 }
