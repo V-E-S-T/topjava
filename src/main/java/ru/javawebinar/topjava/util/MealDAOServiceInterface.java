@@ -1,13 +1,13 @@
-package ru.javawebinar.topjava.dao;
+package ru.javawebinar.topjava.util;
 
 import ru.javawebinar.topjava.model.Meal;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface DAOInterfase {
+public interface MealDAOServiceInterface {
 
-    //public List<Meal> getMealList();
+   // public List<Meal> getMealList();
 
 
     public Meal create(LocalDateTime dateTime, String description, int calories);
@@ -21,6 +21,4 @@ public interface DAOInterfase {
     public Meal get(int id);
 
     public boolean addMeal(Meal meal);
-
 }
-

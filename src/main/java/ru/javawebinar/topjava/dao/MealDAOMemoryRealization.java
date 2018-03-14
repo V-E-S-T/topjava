@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MealDAO implements DAOInterfase{
+public class MealDAOMemoryRealization implements DAOInterfase{
 
 
     private static final transient AtomicInteger NEXT_ID = new AtomicInteger(0);
@@ -27,7 +27,6 @@ public class MealDAO implements DAOInterfase{
         DAOmapa.put(NEXT_ID.incrementAndGet(), new Meal(LocalDateTime.of(2015, Month.MAY, 31, 9, 0), "Завтрак", 500, NEXT_ID.get()));
         DAOmapa.put(NEXT_ID.incrementAndGet(), new Meal(LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 1000, NEXT_ID.get()));
         DAOmapa.put(NEXT_ID.incrementAndGet(), new Meal(LocalDateTime.of(2015, Month.MAY, 31, 21, 0), "Ужин", 300, NEXT_ID.get()));
-
     }
 
     @Override
@@ -41,8 +40,8 @@ public class MealDAO implements DAOInterfase{
         return false;
     }
 
-    @Override
-    public List<Meal> getMealList()
+
+    public static List<Meal> getMealList()
     {
         return Collections.list(DAOmapa.elements());
     }
@@ -50,19 +49,18 @@ public class MealDAO implements DAOInterfase{
     @Override
     public Meal create(LocalDateTime dateTime, String description, int calories)
     {
-        return new Meal(dateTime, description, calories);
+        return DAOmapa.put(NEXT_ID.incrementAndGet(), new Meal(dateTime, description, calories, NEXT_ID.get()));
     }
 
     @Override
     public boolean update(LocalDateTime dateTime, String description, int calories, int id)
     {
-        for (Meal meal: meals)
+        if (DAOmapa.containsKey(id))
         {
-            if (meal.getId() == id)
-            {
-
-            }
-                return meals.remove(meal);
+            DAOmapa.get(id).setDateTime(dateTime);
+            DAOmapa.get(id).setDescription(description);
+            DAOmapa.get(id).setCalories(calories);
+            return true;
         }
         return false;
     }
@@ -70,21 +68,20 @@ public class MealDAO implements DAOInterfase{
     @Override
     public boolean delete(int id)
     {
-        for (Meal meal: meals)
+        if (DAOmapa.containsKey(id))
         {
-            if (meal.getId() == id)
-                return meals.remove(meal);
+            DAOmapa.remove(id);
+            return true;
         }
         return false;
     }
 
     @Override
-    public Meal read(int id) {
+    public Meal get(int id) {
 
-        for (Meal meal: meals)
+        if (DAOmapa.containsKey(id))
         {
-            if (meal.getId() == id)
-                return meal;
+            return DAOmapa.get(id);
         }
         return null;
     }
