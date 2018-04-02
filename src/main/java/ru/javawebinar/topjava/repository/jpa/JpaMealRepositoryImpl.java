@@ -40,7 +40,7 @@ public class JpaMealRepositoryImpl implements MealRepository {
 
         return em.createNamedQuery(Meal.DELETE)
                 .setParameter("id", id)
-                .setParameter("user_id", userId)
+                //.setParameter("user_id", userId)
                 .executeUpdate() != 0;
     }
 
@@ -59,7 +59,9 @@ public class JpaMealRepositoryImpl implements MealRepository {
     @Transactional
     public List<Meal> getAll(int userId) {
 
-        return em.createNamedQuery(Meal.GETALL, Meal.class).getResultList();
+        return em.createNamedQuery(Meal.GETALL, Meal.class)
+                .setParameter("user_id", userId)
+                .getResultList();
     }
 
     @Override
